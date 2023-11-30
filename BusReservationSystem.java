@@ -90,15 +90,15 @@ public class BusReservationSystem {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Bus.No\tName\t\t\tDestinations\t\tCharges\t\tTime");
         System.out.println("-----------------------------------------------------------------------------------------");
-        System.out.println("1\tGangaTravels\tDharan to Kavre\tRs.70\t\t07:00 AM");
-        System.out.println("2\tPhaphara Travels\tKavre To Dharan\tRs.55\t\t01:30 PM");
-        System.out.println("3\tShiv Ganga Travels\tAllahabad To Gorakhpur\tRs.40\t\t03:50 PM");
-        System.out.println("4\tSuper Deluxe\tPokhara To Benigha\tRs.70\t\t01:00 AM");
-        System.out.println("5\tSai Baba Travels\tMaitidevi To Janakpur\tRs.55\t\t12:05 AM");
-        System.out.println("6\tShine On Travels\tMadhubani to Patna\tRs.40\t\t09:30 AM");
-        System.out.println("7\tMayur Travels\tPatna To Gaya\tRs.70\t\t11:00 PM");
-        System.out.println("8\tRajjo Travels\tBegusarai To Patna\tRs.55\t\t08:15 AM");
-        System.out.println("9\tShree Travels\tGaya To Chhapra\tRs.40\t\t04:00 PM");
+        System.out.println("1\tসুর্যমুখি-১\t ধানমন্ডি হইতে ক্যাম্পাস \t৳.২৫\t\t07:00 AM");
+        System.out.println("2\tডলফিন-২৬\tক্যাম্পাস হইতে ধানমন্ডি\t৳.২৫\t\t01:30 PM");
+        System.out.println("3\tসুর্যমুখি-২৬\tমিরপুর হইতে ক্যাম্পাস\t৳.২০\t\t03:50 PM");
+        System.out.println("4\tডলফিন-১\tক্যাম্পাস হইতে মিরপুর\t৳.২০\t\t01:00 AM");
+        System.out.println("5\tসুর্যমুখী-৬\tউত্তরা হইতে ক্যাম্পাস\t৳.৩০\t\t12:05 AM");
+        System.out.println("6\tডলফিন-১০\tক্যাম্পাস হইতে উত্তরা\t৳.৩০\t\t09:30 AM");
+        System.out.println("7\tসুরযমুখি-১৮\tটঙ্গী হইতে ক্যাম্পাস\t৳.৪০\t\t11:00 PM");
+        System.out.println("8\tডলফিন-১১\t্ক্যাম্পাস হইতে টঙ্গী\t৳.৪০\t\t08:15 AM");
+        System.out.println("9\tরজনিগন্ধা-১০\tস্পেসাল বাস সার্ভিস\t.৳১০০\t\t04:00 PM");
         System.out.println("\nPRESS 'ENTER' KEY TO CONTINUE ");
         Scanner scanner = new Scanner(System.in);
         scanner.nextLine(); // Wait for Enter key

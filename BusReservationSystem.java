@@ -33,7 +33,7 @@ public class BusReservationSystem {
                     bookTickets(randomNum);
                     break;
                 case 3:
-                    cancelBooking(randomNum);
+                   cancelBooking(root, randomNum);
                     break;
                 case 4:
                     displayBusSeats(choice);
@@ -105,48 +105,57 @@ public class BusReservationSystem {
     }
 
     private static void bookTickets(int randomNum) {
-        Scanner scanner = new Scanner(System.in);
-        int choice, seats, seatNumber;
+    Scanner scanner = new Scanner(System.in);
+    int choice, seats, seatNumber;
 
-        System.out.print("\nCHOOSE YOUR BUS: ");
-        choice = scanner.nextInt();
+    System.out.print("\nCHOOSE YOUR BUS: ");
+    choice = scanner.nextInt();
 
-        if (choice <= 0 || choice > 9) {
-            System.out.println("\nENTER VALID BUS NUMBER!!");
-            return;
-        }
+    // Check if the choice is valid
+    if (choice <= 0 || choice > 9) {
+        System.out.println("\nENTER VALID BUS NUMBER!!");
+        return;
+    }
 
-        displayBusSeats(choice);
+    displayBusSeats(choice);
 
-        System.out.print("\nNO. OF SEATS YOU NEED TO BOOK: ");
-        seats = scanner.nextInt();
+    System.out.print("\nNO. OF SEATS YOU NEED TO BOOK: ");
+    seats = scanner.nextInt();
 
-        if (seats <= 0 || seats > 32) {
+    // Check if the number of seats is valid
+    if (seats <= 0 || seats > 32) {
+        System.out.println("\nENTER VALID SEAT NUMBER (1-32)!!");
+        return;
+    }
+
+    for (int i = 0; i < seats; i++) {
+        System.out.print("\nENTER THE SEAT NUMBER: ");
+        seatNumber = scanner.nextInt();
+
+        // Check if the seat number is valid
+        if (seatNumber <= 0 || seatNumber > 32) {
             System.out.println("\nENTER VALID SEAT NUMBER (1-32)!!");
-            return;
-        }
-
-        for (int i = 0; i < seats; i++) {
-            System.out.print("\nENTER THE SEAT NUMBER: ");
-            seatNumber = scanner.nextInt();
-
-            if (seatNumber <= 0 || seatNumber > 32) {
-                System.out.println("\nENTER VALID SEAT NUMBER (1-32)!!");
-                i--;
-            } else {
-                int custId = choice * 1000 + seatNumber;
+            i--;
+        } else {
+            int custId = choice * 1000 + seatNumber;
+            // Check if the seat is already booked
+            if (busSeat[choice].length > seatNumber && busSeat[choice][seatNumber] == 0) {
                 busSeat[choice][seatNumber] = 1;
                 root = insert(root, custId);
                 System.out.println("\nYOUR CUSTOMER ID IS: " + custId);
+            } else {
+                System.out.println("\nSeat " + seatNumber + " is already booked. Choose another seat.");
+                i--;
             }
         }
-
-        System.out.println("\nYOUR RESERVATION NUMBER IS: " + randomNum);
-        System.out.println("PLEASE NOTE DOWN YOUR RESERVATION NUMBER FOR CANCEL BOOKING TICKETS!!");
-        System.out.println("PRESS 'ENTER' KEY TO CONTINUE ");
-        scanner.nextLine(); // Consume the newline character
-        scanner.nextLine(); // Wait for Enter key
     }
+
+    System.out.println("\nYOUR RESERVATION NUMBER IS: " + randomNum);
+    System.out.println("PLEASE NOTE DOWN YOUR RESERVATION NUMBER FOR CANCEL BOOKING TICKETS!!");
+    System.out.println("PRESS 'ENTER' KEY TO CONTINUE ");
+    scanner.nextLine(); // Consume the newline character
+    scanner.nextLine(); // Wait for Enter key
+}
 
     private static BinarySearchTree insert(BinarySearchTree r, int custId) {
         if (r == null) {
@@ -165,26 +174,33 @@ public class BusReservationSystem {
     }
 
     private static void displayBusSeats(int choice) {
-        for (int i = 1; i <= 32; i++) {
-            if (i < 10 && i > 0) {
-                System.out.print("0" + i + ".");
-            } else {
-                System.out.print(i + ".");
-            }
+    // Check if the choice is valid
+    if (choice <= 0 || choice > 9) {
+        System.out.println("\nENTER VALID BUS NUMBER!!");
+        return;
+    }
 
-            if (busSeat[choice][i] == 0) {
-                System.out.print("EMPTY ");
-            } else {
-                System.out.print("BOOKED");
-            }
+    for (int i = 1; i <= 32; i++) {
+        if (i < 10 && i > 0) {
+            System.out.print("0" + i + ".");
+        } else {
+            System.out.print(i + ".");
+        }
 
-            System.out.print("         ");
+        // Check if the index is within bounds
+        if (i < busSeat[choice].length && busSeat[choice][i] == 0) {
+            System.out.print("EMPTY ");
+        } else {
+            System.out.print("BOOKED");
+        }
 
-            if (i % 4 == 0) {
-                System.out.println();
-            }
+        System.out.print("         ");
+
+        if (i % 4 == 0) {
+            System.out.println();
         }
     }
+}
     private static void displayReservationInfo(BinarySearchTree r, int reservationNo) {
         if (r == null) {
             System.out.println("\nReservation not found!");
@@ -237,73 +253,84 @@ public class BusReservationSystem {
 
         displayReservationInfo(root, reservationNo);
     }
-    private static void cancelBooking(BinarySearchTree r, int reservationNo) {
-        if (r == null) {
-            System.out.println("\nReservation not found!");
-            return;
-        }
+    // Add a class-level Scanner variable for input
+//private static Scanner scanner = new Scanner(System.in);
 
-        if (r.passnNo == reservationNo) {
-            redColor();
-            System.out.println("\n-----------------------------------------------------------------");
-            System.out.printf("||              NAME: %-10s                               ||%n", r.name);
-            System.out.printf("||              CUSTOMER ID: %-10d                              ||%n", r.passnNo);
-            System.out.printf("||              BUS NUMBER: %-10d                                ||%n", r.passnNo / 1000);
-            System.out.printf("||              SEAT NUMBER: %-10d                               ||%n", r.passnNo % 100);
-            System.out.printf("||              TICKET COST: Rs.%-10d                            ||%n", cost(r));
-            System.out.println("-----------------------------------------------------------------");
-            resetColor();
+// Modify the cancelBooking method
+// Add a class-level Scanner variable for input
+private static Scanner scanner = new Scanner(System.in);
 
-            // Confirm cancellation
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("\nDo you want to cancel this reservation? (Y/N): ");
-            char choice = scanner.next().charAt(0);
-            if (choice == 'Y' || choice == 'y') {
-                cancelSeats(r.passnNo);
-                System.out.println("\nReservation canceled successfully!");
-            } else {
-                System.out.println("\nReservation cancellation canceled!");
-            }
-
-            return;
-        }
-
-        if (r.passnNo > reservationNo) {
-            cancelBooking(r.left, reservationNo);
-        } else {
-            cancelBooking(r.right, reservationNo);
-        }
+// Modify the cancelBooking method
+private static BinarySearchTree cancelBooking(BinarySearchTree r, int reservationNo) {
+    if (r == null) {
+        System.out.println("\nReservation not found!");
+        return null;
     }
 
-    private static void cancelSeats(int custID) {
-        int choice, seatCancel;
-
-        System.out.println("\nEnter the bus number for cancellation: ");
-        Scanner scanner = null;
-		choice = scanner.nextInt();
-
-        System.out.println("\nHow many seats do you want to cancel?");
-        seatCancel = scanner.nextInt();
-
-        for (int i = 0; i < seatCancel; i++) {
-            System.out.println("\nEnter the seat number to cancel: ");
-            int seatNumber = scanner.nextInt();
-            busSeat[choice][seatNumber] = 0;
-        }
-
-        // Display updated seat status
-        System.out.println("\nUpdated seat status:");
-        displayBusSeats(choice);
-    }
-
-    private static void cancelBooking(int randomNum) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("\nEnter your reservation number: ");
-        int reservationNo = scanner.nextInt();
-
+    if (r.passnNo == reservationNo) {
         redColor();
-        System.out.println("\nReservation Cancellation Information:");
+        System.out.println("\n-----------------------------------------------------------------");
+        System.out.printf("||              NAME: %-10s                               ||%n", r.name);
+        System.out.printf("||              CUSTOMER ID: %-10d                              ||%n", r.passnNo);
+        System.out.printf("||              BUS NUMBER: %-10d                                ||%n", r.passnNo / 1000);
+        System.out.printf("||              SEAT NUMBER: %-10d                               ||%n", r.passnNo % 100);
+        System.out.printf("||              TICKET COST: Rs.%-10d                            ||%n", cost(r));
+        System.out.println("-----------------------------------------------------------------");
         resetColor();
 
-        cancelBooking(root, reservationNo);
-    }}
+        // Confirm cancellation
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("\nDo you want to cancel this reservation? (Y/N): ");
+        char choice = scanner.next().charAt(0);
+        if (choice == 'Y' || choice == 'y') {
+            cancelSeats(r.passnNo);
+            System.out.println("\nReservation canceled successfully!");
+            return null;  // Remove the canceled reservation from the BST
+        } else {
+            System.out.println("\nReservation cancellation canceled!");
+            return r;  // No change if cancellation is canceled
+        }
+    }
+
+    if (r.passnNo > reservationNo) {
+        r.left = cancelBooking(r.left, reservationNo);
+    } else {
+        r.right = cancelBooking(r.right, reservationNo);
+    }
+
+    return r;
+}
+
+// Modify the cancelSeats method
+private static void cancelSeats(int custID) {
+    int choice, seatCancel;
+
+    System.out.println("\nEnter the bus number for cancellation: ");
+    choice = scanner.nextInt();
+
+    // Check if the choice is valid
+    if (choice <= 0 || choice > 9) {
+        System.out.println("\nENTER VALID BUS NUMBER!!");
+        return;
+    }
+
+    System.out.println("\nHow many seats do you want to cancel?");
+    seatCancel = scanner.nextInt();
+
+    for (int i = 0; i < seatCancel; i++) {
+        System.out.println("\nEnter the seat number to cancel: ");
+        int seatNumber = scanner.nextInt();
+        // Check if the seat number is valid
+        if (seatNumber > 0 && seatNumber <= busSeat[choice].length) {
+            busSeat[choice][seatNumber] = 0;
+        } else {
+            System.out.println("\nENTER VALID SEAT NUMBER (1-" + busSeat[choice].length + ")!!");
+            i--;
+        }
+    }
+
+    // Display updated seat status
+    System.out.println("\nUpdated seat status:");
+    displayBusSeats(choice);
+}
+}
